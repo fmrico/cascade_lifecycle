@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <string>
+#include <set>
 
 #include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
@@ -37,61 +39,67 @@ CascadeLifecycleNode::CascadeLifecycleNode(
   const std::string & namespace_,
   const rclcpp::NodeOptions & options)
 : LifecycleNode(
-  node_name,
-  namespace_,
-  options)
+    node_name,
+    namespace_,
+    options)
 {
   using std::placeholders::_1;
-  
+  using namespace std::chrono_literals;
+
   activations_pub_ = create_publisher<cascade_lifecycle_msgs::msg::Activation>(
     "/cascade_lifecycle_activations",
     rclcpp::QoS(1000).keep_all().transient_local().reliable());
 
   states_pub_ = create_publisher<cascade_lifecycle_msgs::msg::State>(
-    "/cascade_lifecycle_states", rclcpp::QoS(1).keep_all().transient_local().reliable());
-  
+    "/cascade_lifecycle_states", rclcpp::QoS(5).keep_last(5).transient_local().reliable());
+
   activations_sub_ = create_subscription<cascade_lifecycle_msgs::msg::Activation>(
     "/cascade_lifecycle_activations",
     rclcpp::QoS(1000).keep_all().transient_local().reliable(),
-    std::bind(&CascadeLifecycleNode::activations_callback, this, _1)); 
-  
+    std::bind(&CascadeLifecycleNode::activations_callback, this, _1));
+
   states_sub_ = create_subscription<cascade_lifecycle_msgs::msg::State>(
     "/cascade_lifecycle_states",
-    rclcpp::QoS(100).keep_all().transient_local().reliable(),
-    std::bind(&CascadeLifecycleNode::states_callback, this, _1)); 
+    rclcpp::QoS(100).keep_last(100).transient_local().reliable(),
+    std::bind(&CascadeLifecycleNode::states_callback, this, _1));
+
+  timer_ = create_wall_timer(
+    200ms,
+    std::bind(&CascadeLifecycleNode::timer_callback, this));
 
   activations_pub_->on_activate();
   states_pub_->on_activate();
 
   register_on_configure(std::bind(
-    &CascadeLifecycleNode::on_configure_internal,
-    this, std::placeholders::_1));
-  
+      &CascadeLifecycleNode::on_configure_internal,
+      this, std::placeholders::_1));
+
   register_on_cleanup(std::bind(
-    &CascadeLifecycleNode::on_cleanup_internal,
-    this, std::placeholders::_1));
+      &CascadeLifecycleNode::on_cleanup_internal,
+      this, std::placeholders::_1));
 
   register_on_shutdown(std::bind(
-    &CascadeLifecycleNode::on_shutdown_internal,
-    this, std::placeholders::_1));
-  
+      &CascadeLifecycleNode::on_shutdown_internal,
+      this, std::placeholders::_1));
+
   register_on_activate(std::bind(
-    &CascadeLifecycleNode::on_activate_internal,
-    this, std::placeholders::_1));
+      &CascadeLifecycleNode::on_activate_internal,
+      this, std::placeholders::_1));
 
   register_on_deactivate(std::bind(
-    &CascadeLifecycleNode::on_deactivate_internal,
-    this, std::placeholders::_1));
+      &CascadeLifecycleNode::on_deactivate_internal,
+      this, std::placeholders::_1));
 
   register_on_error(std::bind(
-    &CascadeLifecycleNode::on_error_internal,
-    this, std::placeholders::_1));
+      &CascadeLifecycleNode::on_error_internal,
+      this, std::placeholders::_1));
 }
 
 void
-CascadeLifecycleNode::activations_callback(const cascade_lifecycle_msgs::msg::Activation::SharedPtr msg)
+CascadeLifecycleNode::activations_callback(
+  const cascade_lifecycle_msgs::msg::Activation::SharedPtr msg)
 {
-  switch(msg->operation_type) {
+  switch (msg->operation_type) {
     case cascade_lifecycle_msgs::msg::Activation::ADD:
       if (msg->activation == get_name()) {
         activators_.insert(msg->activator);
@@ -109,15 +117,15 @@ CascadeLifecycleNode::activations_callback(const cascade_lifecycle_msgs::msg::Ac
           activators_state_.erase(msg->activator);
         }
       }
-      break;   
-  };
+      break;
+  }
 }
 
 void
 CascadeLifecycleNode::states_callback(const cascade_lifecycle_msgs::msg::State::SharedPtr msg)
 {
   if (activators_state_.find(msg->node_name) != activators_state_.end() &&
-    msg->node_name != get_name()) 
+    msg->node_name != get_name())
   {
     activators_state_[msg->node_name] = msg->state;
     update_state();
@@ -235,7 +243,7 @@ CascadeLifecycleNode::on_activate_internal(
     cascade_lifecycle_msgs::msg::State msg;
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE;
     msg.node_name = get_name();
- 
+
     states_pub_->publish(msg);
   }
 
@@ -280,7 +288,7 @@ CascadeLifecycleNode::on_error_internal(
   return ret;
 }
 
-void 
+void
 CascadeLifecycleNode::update_state()
 {
   bool parent_inactive = false;
@@ -293,33 +301,57 @@ CascadeLifecycleNode::update_state()
       activator.second == lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE;
   }
 
-  switch(get_current_state().id()) {
+  switch (get_current_state().id()) {
     case lifecycle_msgs::msg::State::PRIMARY_STATE_UNKNOWN:
       if (parent_active || parent_inactive) {
         trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
       }
       break;
 
-     case lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED:
+    case lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED:
       if (parent_active || parent_inactive) {
         trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
       }
-      break;   
-    
+      break;
+
     case lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE:
       if (parent_active) {
         trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
       }
       break;
-    
+
     case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
       if (!parent_active && parent_inactive) {
         trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
       }
       break;
-    
+
     case lifecycle_msgs::msg::State::PRIMARY_STATE_FINALIZED:
       break;
+  }
+}
+
+void
+CascadeLifecycleNode::timer_callback()
+{
+  auto nodes = this->get_node_graph_interface()->get_node_names();
+
+  std::set<std::string>::iterator it = activators_.begin();
+  while (it != activators_.end()) {
+    const auto & node_name = *it;
+    if (std::find(nodes.begin(), nodes.end(), "/" + node_name) == nodes.end()) {
+      RCLCPP_DEBUG(get_logger(), "Activator %s is not longer present, removing from activators",
+        node_name.c_str());
+      it = activators_.erase(it);
+
+      if (get_current_state().id() == activators_state_[node_name]) {
+        update_state();
+      }
+
+      activators_state_.erase(node_name);
+    } else {
+      it++;
+    }
   }
 }
 

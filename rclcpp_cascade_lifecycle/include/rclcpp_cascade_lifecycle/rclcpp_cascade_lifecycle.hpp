@@ -17,6 +17,7 @@
 
 #include <set>
 #include <map>
+#include <string>
 
 #include "rclcpp/node_options.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
@@ -77,7 +78,6 @@ public:
   }
 
 private:
-
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_configure_internal(const rclcpp_lifecycle::State & previous_state);
 
@@ -97,10 +97,13 @@ private:
   on_error_internal(const rclcpp_lifecycle::State & previous_state);
 
   rclcpp_lifecycle::LifecyclePublisher<cascade_lifecycle_msgs::msg::State>::SharedPtr states_pub_;
-  rclcpp_lifecycle::LifecyclePublisher<cascade_lifecycle_msgs::msg::Activation>::SharedPtr activations_pub_;
+  rclcpp_lifecycle::LifecyclePublisher<cascade_lifecycle_msgs::msg::Activation>::SharedPtr
+    activations_pub_;
 
   rclcpp::Subscription<cascade_lifecycle_msgs::msg::Activation>::SharedPtr activations_sub_;
   rclcpp::Subscription<cascade_lifecycle_msgs::msg::State>::SharedPtr states_sub_;
+
+  rclcpp::TimerBase::SharedPtr timer_;
 
   std::set<std::string> activators_;
   std::set<std::string> activations_;
@@ -109,6 +112,8 @@ private:
   void activations_callback(const cascade_lifecycle_msgs::msg::Activation::SharedPtr msg);
   void states_callback(const cascade_lifecycle_msgs::msg::State::SharedPtr msg);
   void update_state();
+
+  void timer_callback();
 };
 
 }  // namespace rclcpp_cascade_lifecycle
