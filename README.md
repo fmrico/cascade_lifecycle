@@ -13,8 +13,8 @@ When an application is made up of multiple LNs, it is common to use a node to or
 The class `rclcpp_cascade_lifecycle::CascadeLifecycleNode` extends the `rclcpp_lifecycle::LifecycleNode` API with next operations:
 
 ```
-void add_activation (const std :: string & node_name);
-void remove_activation (const std :: string & node_name);
+void add_activation (const std::string & node_name);
+void remove_activation (const std::string & node_name);
 void clear_activation ();
 ```
 
