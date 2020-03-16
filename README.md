@@ -1,4 +1,4 @@
-# rclcpp_cascade_lifecycle
+# cascade_lifecycle
 
 
 [![Build Status](https://travis-ci.com/fmrico/rclcpp_cascade_lifecycle.svg?branch=master)](https://travis-ci.com/fmrico/rclcpp_cascade_lifecycle)
