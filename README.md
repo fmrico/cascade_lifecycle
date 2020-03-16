@@ -1,7 +1,7 @@
 # cascade_lifecycle
 
 
-[![Build Status](https://travis-ci.com/fmrico/rclcpp_cascade_lifecycle.svg?branch=master)](https://travis-ci.com/fmrico/rclcpp_cascade_lifecycle)
+[![Build Status](https://travis-ci.com/fmrico/cascade_lifecycle.svg?branch=master)](https://travis-ci.com/fmrico/cascade_lifecycle)
 
 
 [Managed nodes](https://design.ros2.org/articles/node_lifecycle.html) (or lifecycle nodes, LN) are an extremely useful concept in ROS2. It provides a mechanism to define states in a node so that its life cycle can be better controlled.
