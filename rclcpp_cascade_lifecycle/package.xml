@@ -5,7 +5,7 @@
   <version>0.0.2</version>
   <description>Provides a mechanism to make trees of lifecycle nodes to propagate state changes</description>
   <maintainer email="fmrico@gmail.com">fmrico</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache License, Version 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
