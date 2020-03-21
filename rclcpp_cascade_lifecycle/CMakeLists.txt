@@ -44,6 +44,17 @@ if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
+install(DIRECTORY include/
+  DESTINATION include/
+)
+
+install(TARGETS
+  ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
