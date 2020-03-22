@@ -2,8 +2,8 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.3 (2020-03-22)
+------------------
 * Installing headers and libs
   Signed-off-by: Francisco Martin Rico <fmrico@gmail.com>
 * Add license
