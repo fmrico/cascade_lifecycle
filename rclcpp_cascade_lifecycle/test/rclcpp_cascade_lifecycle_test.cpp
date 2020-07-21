@@ -35,7 +35,7 @@ public:
   }
 
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
-  on_configure(const rclcpp_lifecycle::State & previous_state)
+  on_configure(const rclcpp_lifecycle::State &)
   {
     my_state_ = lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
 
@@ -43,7 +43,7 @@ public:
   }
 
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
-  on_activate(const rclcpp_lifecycle::State & previous_state)
+  on_activate(const rclcpp_lifecycle::State &)
   {
     my_state_ = lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE;
 
@@ -51,7 +51,7 @@ public:
   }
 
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
-  on_deactivate(const rclcpp_lifecycle::State & previous_state)
+  on_deactivate(const rclcpp_lifecycle::State &)
   {
     my_state_ = lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
 
