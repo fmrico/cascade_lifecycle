@@ -82,7 +82,7 @@ TEST(rclcpp_cascade_lifecycle, activations_managing_basic)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -111,7 +111,7 @@ TEST(rclcpp_cascade_lifecycle, activations_managing_late_joining)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -141,7 +141,7 @@ TEST(rclcpp_cascade_lifecycle, activations_managing_late_joining)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -169,7 +169,7 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -184,15 +184,16 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   ASSERT_FALSE(node_b->get_activators_state().empty());
   ASSERT_EQ(node_b->get_activators_state().size(), 1u);
   ASSERT_EQ(node_b->get_activators_state().begin()->first, "node_A");
-  ASSERT_EQ(node_b->get_activators_state().begin()->second,
-    lifecycle_msgs::msg::State::PRIMARY_STATE_UNKNOWN);
+  ASSERT_EQ(
+    node_b->get_activators_state().begin()->second,
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
 
   node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -202,7 +203,8 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   ASSERT_FALSE(node_b->get_activators_state().empty());
   ASSERT_EQ(node_b->get_activators_state().size(), 1u);
   ASSERT_EQ(node_b->get_activators_state().begin()->first, "node_A");
-  ASSERT_EQ(node_b->get_activators_state().begin()->second,
+  ASSERT_EQ(
+    node_b->get_activators_state().begin()->second,
     lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
 
   ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
@@ -213,7 +215,7 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -223,7 +225,8 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   ASSERT_FALSE(node_b->get_activators_state().empty());
   ASSERT_EQ(node_b->get_activators_state().size(), 1u);
   ASSERT_EQ(node_b->get_activators_state().begin()->first, "node_A");
-  ASSERT_EQ(node_b->get_activators_state().begin()->second,
+  ASSERT_EQ(
+    node_b->get_activators_state().begin()->second,
     lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
 
   ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
@@ -234,7 +237,7 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -244,7 +247,8 @@ TEST(rclcpp_cascade_lifecycle, activations_chained)
   ASSERT_FALSE(node_b->get_activators_state().empty());
   ASSERT_EQ(node_b->get_activators_state().size(), 1u);
   ASSERT_EQ(node_b->get_activators_state().begin()->first, "node_A");
-  ASSERT_EQ(node_b->get_activators_state().begin()->second,
+  ASSERT_EQ(
+    node_b->get_activators_state().begin()->second,
     lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
 
   ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
@@ -268,7 +272,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -286,14 +290,15 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
   }
 
   ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
-  ASSERT_EQ(node_b->get_current_state().id(),
+  ASSERT_EQ(
+    node_b->get_current_state().id(),
     lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
   ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
 
@@ -302,7 +307,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -317,7 +322,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -332,7 +337,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -348,7 +353,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -363,7 +368,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -378,7 +383,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -392,7 +397,37 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_a->remove_activation("node_C");
+  node_b->remove_activation("node_C");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_a->now();
+    while ((node_a->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_c->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_a->now();
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -402,6 +437,7 @@ TEST(rclcpp_cascade_lifecycle, multiple_activations_chained)
   ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
   ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
 }
+
 
 TEST(rclcpp_cascade_lifecycle, fast_change)
 {
@@ -417,7 +453,7 @@ TEST(rclcpp_cascade_lifecycle, fast_change)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -435,7 +471,7 @@ TEST(rclcpp_cascade_lifecycle, fast_change)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -459,7 +495,7 @@ TEST(rclcpp_cascade_lifecycle, activators_disappearance)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -477,7 +513,7 @@ TEST(rclcpp_cascade_lifecycle, activators_disappearance)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 0.5) {
+    while ((node_a->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -503,6 +539,359 @@ TEST(rclcpp_cascade_lifecycle, activators_disappearance)
   ASSERT_EQ(node_b->get_activations().size(), 0u);
 }
 
+TEST(rclcpp_cascade_lifecycle, activators_disappearance_inter)
+{
+  auto node_a = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_A");
+  auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B");
+  auto node_c = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_C");
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node_a->get_node_base_interface());
+  executor.add_node(node_b->get_node_base_interface());
+  executor.add_node(node_c->get_node_base_interface());
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_a->now();
+    while ((node_a->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(
+    node_b->get_current_state().id(),
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
+  ASSERT_EQ(
+    node_b->get_current_state().id(),
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(
+    node_b->get_current_state().id(),
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
+  ASSERT_EQ(
+    node_b->get_current_state().id(),
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
+
+  node_a->add_activation("node_B");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(
+    node_c->get_current_state().id(),
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
+
+  node_a->remove_activation("node_B");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(
+    node_c->get_current_state().id(),
+    lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED);
+
+  node_a->add_activation("node_C");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_a->remove_activation("node_C");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_a->add_activation("node_C");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_c->add_activation("node_B");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_c->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_a->remove_activation("node_C");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_c->remove_activation("node_B");
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+
+  ASSERT_TRUE(node_a->get_activators().empty());
+  ASSERT_TRUE(node_a->get_activations().empty());
+  ASSERT_TRUE(node_b->get_activators().empty());
+  ASSERT_TRUE(node_b->get_activations().empty());
+  ASSERT_TRUE(node_c->get_activators().empty());
+  ASSERT_TRUE(node_c->get_activations().empty());
+
+
+  node_a->add_activation("node_C");
+  node_b->add_activation("node_C");
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+  node_b->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_c->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_a->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_c->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE);
+
+  node_b->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+
+  {
+    rclcpp::Rate rate(10);
+    auto start = node_b->now();
+    while ((node_b->now() - start).seconds() < 1.0) {
+      executor.spin_some();
+      rate.sleep();
+    }
+  }
+
+  ASSERT_EQ(node_a->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+  ASSERT_EQ(node_c->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE);
+}
+
 TEST(rclcpp_cascade_lifecycle, inheritance)
 {
   auto node_1 = std::make_shared<TestNode>("node_1");
@@ -518,7 +907,7 @@ TEST(rclcpp_cascade_lifecycle, inheritance)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 0.5) {
+    while ((node_1->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -534,7 +923,7 @@ TEST(rclcpp_cascade_lifecycle, inheritance)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 0.5) {
+    while ((node_1->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -550,7 +939,7 @@ TEST(rclcpp_cascade_lifecycle, inheritance)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 0.5) {
+    while ((node_1->now() - start).seconds() < 1.0) {
       executor.spin_some();
       rate.sleep();
     }
