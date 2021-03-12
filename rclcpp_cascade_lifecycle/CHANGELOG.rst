@@ -2,8 +2,8 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.7 (2021-03-12)
+------------------
 * Dynamic add/remove deps
 * Contributors: Francisco Martin Rico, Francisco Martín Rico
 
