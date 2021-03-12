@@ -1,6 +1,6 @@
 # cascade_lifecycle
 
-[![main](https://github.com/fmrico/cascade_lifecycle/actions/workflows/main.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/main.yaml)
+[![master](https://github.com/fmrico/cascade_lifecycle/actions/workflows/master.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/master.yaml)
 
 [Managed nodes](https://design.ros2.org/articles/node_lifecycle.html) (or lifecycle nodes, LN) are an extremely useful concept in ROS2. It provides a mechanism to define states in a node so that its life cycle can be better controlled.
 
