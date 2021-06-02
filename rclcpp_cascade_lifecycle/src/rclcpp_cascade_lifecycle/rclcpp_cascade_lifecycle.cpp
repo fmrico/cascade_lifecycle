@@ -1,4 +1,5 @@
 // Copyright 2020 Intelligent Robotics Lab
+// Copyright 2021 Homalozoa, Xiaomi Inc
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,19 +48,19 @@ CascadeLifecycleNode::CascadeLifecycleNode(
   using namespace std::chrono_literals;
 
   activations_pub_ = create_publisher<cascade_lifecycle_msgs::msg::Activation>(
-    "/cascade_lifecycle_activations",
+    "cascade_lifecycle_activations",
     rclcpp::QoS(1000).keep_all().transient_local().reliable());
 
   states_pub_ = create_publisher<cascade_lifecycle_msgs::msg::State>(
-    "/cascade_lifecycle_states", rclcpp::QoS(100));
+    "cascade_lifecycle_states", rclcpp::QoS(100));
 
   activations_sub_ = create_subscription<cascade_lifecycle_msgs::msg::Activation>(
-    "/cascade_lifecycle_activations",
+    "cascade_lifecycle_activations",
     rclcpp::QoS(1000).keep_all().transient_local().reliable(),
     std::bind(&CascadeLifecycleNode::activations_callback, this, _1));
 
   states_sub_ = create_subscription<cascade_lifecycle_msgs::msg::State>(
-    "/cascade_lifecycle_states",
+    "cascade_lifecycle_states",
     rclcpp::QoS(100),
     std::bind(&CascadeLifecycleNode::states_callback, this, _1));
 
@@ -357,11 +358,15 @@ void
 CascadeLifecycleNode::timer_callback()
 {
   auto nodes = this->get_node_graph_interface()->get_node_names();
+  std::string ns = get_namespace();
+  if (ns != std::string("/")) {
+    ns = ns + std::string("/");
+  }
 
   std::set<std::string>::iterator it = activators_.begin();
   while (it != activators_.end()) {
     const auto & node_name = *it;
-    if (std::find(nodes.begin(), nodes.end(), "/" + node_name) == nodes.end()) {
+    if (std::find(nodes.begin(), nodes.end(), ns + node_name) == nodes.end()) {
       RCLCPP_DEBUG(
         get_logger(), "Activator %s is not longer present, removing from activators",
         node_name.c_str());
