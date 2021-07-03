@@ -2,6 +2,14 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add support for namespace&Fix CI
+  1. add support for namespace & test code
+  2. fix CI config to v0.2
+* Dynamic add/remove deps
+* Contributors: Francisco Martin Rico, Francisco Martín Rico, Homalozoa
+
 0.0.5 (2020-03-26)
 ------------------
 * Fix shared_ptr ambiguous error
