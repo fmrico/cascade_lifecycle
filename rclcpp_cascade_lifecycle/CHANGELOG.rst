@@ -2,8 +2,8 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2021-07-03)
+------------------
 * Add support for namespace&Fix CI
   1. add support for namespace & test code
   2. fix CI config to v0.2
