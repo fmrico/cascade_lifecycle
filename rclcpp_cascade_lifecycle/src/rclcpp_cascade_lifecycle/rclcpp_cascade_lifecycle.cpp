@@ -167,7 +167,7 @@ CascadeLifecycleNode::add_activation(const std::string & node_name)
     activations_.insert(node_name);
 
     if (!activations_pub_->is_activated()) {
-      RCL_DEBUG(get_logger(), "Not activated in add_activation %d", __LINE__);
+      RCLCPP_DEBUG(get_logger(), "Not activated in add_activation %d", __LINE__);
       activations_pub_->on_activate();
     }
 
