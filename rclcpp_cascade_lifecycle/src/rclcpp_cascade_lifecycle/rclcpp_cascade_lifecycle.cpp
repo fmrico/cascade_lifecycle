@@ -295,7 +295,7 @@ CascadeLifecycleNode::on_activate_internal(
       RCLCPP_DEBUG(get_logger(), "Not activated in on_activate_internal %d", __LINE__);
       states_pub_->on_activate();
     }
-  
+
     states_pub_->publish(msg);
   }
 
