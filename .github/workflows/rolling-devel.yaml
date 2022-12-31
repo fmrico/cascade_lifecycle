@@ -1,12 +1,12 @@
-name: master
+name: rolling-devel
 
 on:
   pull_request:
     branches:
-      - master
+      - rolling-devel
   push:
     branches:
-      - master
+      - rolling-devel
   workflow_dispatch:
     schedule:
       - cron: '0 0 * * 0'
@@ -30,7 +30,7 @@ jobs:
           target-ros2-distro: rolling
           vcs-repo-file-url: ""
           colcon-mixin-name: coverage-gcc
-          colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
+          colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/rolling-devel/index.yaml
       - name: Codecov
         uses: codecov/codecov-action@v3.1.1
         with:
