@@ -166,6 +166,11 @@ CascadeLifecycleNode::add_activation(const std::string & node_name)
 
     activations_.insert(node_name);
 
+    if (!activations_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in add_activation %d", __LINE__);
+      activations_pub_->on_activate();
+    }
+
     activations_pub_->publish(msg);
   } else {
     RCLCPP_WARN(get_logger(), "Trying to set an auto activation");
@@ -182,6 +187,11 @@ CascadeLifecycleNode::remove_activation(const std::string & node_name)
     msg.activation = node_name;
 
     activations_.erase(node_name);
+
+    if (!activations_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in add_activation %d", __LINE__);
+      activations_pub_->on_activate();
+    }
 
     activations_pub_->publish(msg);
   } else {
@@ -210,6 +220,10 @@ CascadeLifecycleNode::on_configure_internal(
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
     msg.node_name = get_name();
 
+    if (!states_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in on_configure_internal %d", __LINE__);
+      states_pub_->on_activate();
+    }
     states_pub_->publish(msg);
   }
 
@@ -228,6 +242,11 @@ CascadeLifecycleNode::on_cleanup_internal(
     cascade_lifecycle_msgs::msg::State msg;
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED;
     msg.node_name = get_name();
+
+    if (!states_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in on_cleanup_internal %d", __LINE__);
+      states_pub_->on_activate();
+    }
 
     states_pub_->publish(msg);
   }
@@ -248,6 +267,11 @@ CascadeLifecycleNode::on_shutdown_internal(
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_FINALIZED;
     msg.node_name = get_name();
 
+    if (!states_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in on_shutdown_internal %d", __LINE__);
+      states_pub_->on_activate();
+    }
+
     states_pub_->publish(msg);
   }
 
@@ -266,6 +290,11 @@ CascadeLifecycleNode::on_activate_internal(
     cascade_lifecycle_msgs::msg::State msg;
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE;
     msg.node_name = get_name();
+
+    if (!states_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in on_activate_internal %d", __LINE__);
+      states_pub_->on_activate();
+    }
 
     states_pub_->publish(msg);
   }
@@ -286,6 +315,11 @@ CascadeLifecycleNode::on_deactivate_internal(
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
     msg.node_name = get_name();
 
+    if (!states_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in on_deactivate_internal %d", __LINE__);
+      states_pub_->on_activate();
+    }
+
     states_pub_->publish(msg);
   }
 
@@ -304,6 +338,11 @@ CascadeLifecycleNode::on_error_internal(
     cascade_lifecycle_msgs::msg::State msg;
     msg.state = lifecycle_msgs::msg::State::PRIMARY_STATE_FINALIZED;
     msg.node_name = get_name();
+
+    if (!states_pub_->is_activated()) {
+      RCLCPP_DEBUG(get_logger(), "Not activated in on_error_internal %d", __LINE__);
+      states_pub_->on_activate();
+    }
 
     states_pub_->publish(msg);
   }
@@ -385,6 +424,11 @@ CascadeLifecycleNode::timer_callback()
   cascade_lifecycle_msgs::msg::State msg;
   msg.state = get_current_state().id();
   msg.node_name = get_name();
+
+  if (!states_pub_->is_activated()) {
+    RCLCPP_DEBUG(get_logger(), "Not activated in timer_callback %d", __LINE__);
+    states_pub_->on_activate();
+  }
 
   states_pub_->publish(msg);
 
