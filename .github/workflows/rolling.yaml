@@ -1,12 +1,12 @@
-name: master
+name: rolling
 
 on:
   pull_request:
     branches:
-      - master
+      - rolling
   push:
     branches:
-      - master
+      - rolling
   workflow_dispatch:
     schedule:
       - cron: '0 0 * * 0'
