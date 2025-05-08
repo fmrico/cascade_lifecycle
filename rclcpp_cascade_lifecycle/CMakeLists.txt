@@ -34,7 +34,7 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
   src/rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.cpp
 )
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
