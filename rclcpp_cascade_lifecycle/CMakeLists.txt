@@ -23,6 +23,13 @@ find_package(lifecycle_msgs REQUIRED)
 find_package(cascade_lifecycle_msgs REQUIRED)
 
 set(dependencies
+  rclcpp::rclcpp
+  rclcpp_lifecycle::rclcpp_lifecycle
+  ${lifecycle_msgs_TARGETS}
+  ${cascade_lifecycle_msgs_TARGETS}
+)
+
+set(package_dependencies
   rclcpp
   rclcpp_lifecycle
   lifecycle_msgs
@@ -34,7 +41,11 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
   src/rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.cpp
 )
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+target_include_directories(${PROJECT_NAME} PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+target_link_libraries(${PROJECT_NAME} PUBLIC ${dependencies})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -44,19 +55,21 @@ if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
-install(DIRECTORY include/
-  DESTINATION include/
+install(
+  DIRECTORY include/
+  DESTINATION include/${PROJECT_NAME}
 )
 
 install(TARGETS
-  ${PROJECT_NAME}
+  ${PROJECT_NAME}  EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
+  RUNTIME DESTINATION bin
 )
 
-ament_export_include_directories(include)
+ament_export_include_directories("include/${PROJECT_NAME}")
 ament_export_libraries(${PROJECT_NAME})
-ament_export_dependencies(${dependencies})
+ament_export_targets(${PROJECT_NAME})
+ament_export_dependencies(${package_dependencies})
 
 ament_package()
