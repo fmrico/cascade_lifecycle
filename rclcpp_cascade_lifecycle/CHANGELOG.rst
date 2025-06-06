@@ -2,8 +2,8 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.4 (2025-06-06)
+------------------
 * Fix deprecation of ament_target_dependencies
 * Contributors: Francisco Martín Ricoo, David Lu, Alejandro Hernández Cordero
 
