@@ -2,8 +2,8 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.3 (2025-06-06)
+------------------
 * Fix deprecation of ament_target_dependencies
 * Change to EventsExecutor
 * Explicit removal of node from executor before destroy in no dups
