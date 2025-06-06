@@ -1,12 +1,12 @@
-name: rolling
+name: kilted-devel
 
 on:
   pull_request:
     branches:
-      - rolling
+      - kilted-devel
   push:
     branches:
-      - rolling
+      - kilted-devel
   workflow_dispatch:
     schedule:
       - cron: '0 0 * * 0'
@@ -22,12 +22,12 @@ jobs:
       - name: Setup ROS 2
         uses: ros-tooling/setup-ros@0.7.13
         with:
-          required-ros-distributions: rolling
+          required-ros-distributions: kilted
       - name: build and test
         uses: ros-tooling/action-ros-ci@0.4.3
         with:
           package-name: rclcpp_cascade_lifecycle rclpy_cascade_lifecycle cascade_lifecycle_msgs
-          target-ros2-distro: rolling
+          target-ros2-distro: kilted
           colcon-defaults: |
             {
               "test": {
