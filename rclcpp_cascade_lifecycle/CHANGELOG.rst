@@ -2,6 +2,13 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix deprecation of ament_target_dependencies
+* Change to EventsExecutor
+* Explicit removal of node from executor before destroy in no dups
+* Contributors: Francisco Martín Rico
+
 2.0.2 (2024-10-12)
 ------------------
 * Explicit removal of node from executor before destroy
