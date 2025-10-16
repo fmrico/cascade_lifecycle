@@ -2,6 +2,9 @@
 Changelog for package rclpy_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.0.3 (2025-06-06)
 ------------------
 
