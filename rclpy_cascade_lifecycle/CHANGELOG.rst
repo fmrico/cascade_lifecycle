@@ -2,8 +2,13 @@
 Changelog for package rclpy_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.0.4 (2025-10-16)
 ------------------
+* Update Changelog
+* Contributors: Francisco Martín Rico
 
 2.0.3 (2025-06-06)
 ------------------
