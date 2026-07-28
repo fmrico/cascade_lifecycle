@@ -2,8 +2,8 @@
 Changelog for package rclpy_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.6 (2026-07-28)
+------------------
 * Update to rolling
 * Merge pull request `#21 <https://github.com/fmrico/cascade_lifecycle/issues/21>`_ from ahcorde/ahcorde/rolling/fix_dependency
   Fixed rclpy_cascade_lifecycle package.xml

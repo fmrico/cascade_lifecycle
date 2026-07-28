@@ -6,7 +6,7 @@ package_name = 'rclpy_cascade_lifecycle'
 
 setup(
     name=package_name,
-    version='2.0.5',
+    version='2.0.6',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
