@@ -1,12 +1,12 @@
-name: lyrical
+name: lyrical-devel
 
 on:
   pull_request:
     branches:
-      - lyrical
+      - lyrical-devel
   push:
     branches:
-      - lyrical
+      - lyrical-devel
   schedule:
       - cron: '0 0 * * 0'
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
       - name: Repo checkout
         uses: actions/checkout@v6
         with:
-          ref: lyrical
+          ref: lyrical-devel
       - name: build and test
         uses: ros-tooling/action-ros-ci@0.4.8
         with:
