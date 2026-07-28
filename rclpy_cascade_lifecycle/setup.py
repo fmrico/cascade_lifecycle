@@ -21,7 +21,11 @@ setup(
     maintainer_email='jc.manzanares.serrano@gmail.com',
     description='rclpy cascade lifecycle',
     license='Apache License, Version 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'ros2cli.command_plugins': [
             'cascade_lifecycle = \
