@@ -48,3 +48,4 @@ ASSERT_EQ(node_b->get_current_state().id(), lifecycle_msgs::msg::State::PRIMARY_
 ```
 
 Hope it helps!!!
+
