@@ -1,10 +1,7 @@
 # cascade_lifecycle
 
 [![rolling](https://github.com/fmrico/cascade_lifecycle/actions/workflows/rolling.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/rolling.yaml)
-[![foxy-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/foxy-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/foxy-devel.yaml)
-[![galactic-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/galactic-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/galactic-devel.yaml)
 [![humble-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/humble-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/humble-devel.yaml)
-[![iron-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/iron-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/iron-devel.yaml)
 [![jazzy-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/jazzy-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/jazzy-devel.yaml)
 [![kilted-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/kilted-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/kilted-devel.yaml)
 [![rolling-devel](https://github.com/fmrico/cascade_lifecycle/actions/workflows/rolling-devel.yaml/badge.svg)](https://github.com/fmrico/cascade_lifecycle/actions/workflows/rolling-devel.yaml)
