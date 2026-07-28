@@ -1,12 +1,12 @@
-name: rolling
+name: rolling-devel
 
 on:
   pull_request:
     branches:
-      - rolling
+      - rolling-devel
   push:
     branches:
-      - rolling
+      - rolling-devel
   schedule:
       - cron: '0 0 * * 0'
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
       - name: Repo checkout
         uses: actions/checkout@v6
         with:
-          ref: rolling
+          ref: rolling-devel
       - name: build and test
         uses: ros-tooling/action-ros-ci@0.4.8
         with:
