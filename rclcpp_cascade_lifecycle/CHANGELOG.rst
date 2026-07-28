@@ -2,6 +2,13 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#21 <https://github.com/fmrico/cascade_lifecycle/issues/21>`_ from ahcorde/ahcorde/rolling/fix_dependency
+  Fixed rclpy_cascade_lifecycle package.xml
+* updated CMakeLists.txt
+* Contributors: Alejandro Hernandez Cordero, Francisco Martín Rico
+
 2.0.4 (2025-06-06)
 ------------------
 * Fix deprecation of ament_target_dependencies
