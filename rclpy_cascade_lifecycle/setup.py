@@ -6,7 +6,7 @@ package_name = 'rclpy_cascade_lifecycle'
 
 setup(
     name=package_name,
-    version='2.0.4',
+    version='2.0.6',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -21,7 +21,11 @@ setup(
     maintainer_email='jc.manzanares.serrano@gmail.com',
     description='rclpy cascade lifecycle',
     license='Apache License, Version 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'ros2cli.command_plugins': [
             'cascade_lifecycle = \
