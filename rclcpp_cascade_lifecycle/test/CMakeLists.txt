@@ -9,3 +9,8 @@ ament_add_gtest(
   TIMEOUT 120
 )
 target_link_libraries(rclcpp_cascade_lifecycle_test_no_duplicates ${dependencies} ${PROJECT_NAME})
+
+# Tests discover only nodes on this host: parallel jobs do not mix
+set_tests_properties(
+  rclcpp_cascade_lifecycle_test rclcpp_cascade_lifecycle_test_no_duplicates
+  PROPERTIES ENVIRONMENT "ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST")
