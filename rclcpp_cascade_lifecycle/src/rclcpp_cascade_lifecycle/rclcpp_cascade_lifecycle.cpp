@@ -15,6 +15,7 @@
 
 #include <string>
 #include <set>
+#include <vector>
 
 #include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
@@ -479,7 +480,16 @@ CascadeLifecycleNode::update_state()
 void
 CascadeLifecycleNode::timer_callback()
 {
-  auto nodes = this->get_node_graph_interface()->get_node_names();
+  std::vector<std::string> nodes;
+  try {
+    nodes = this->get_node_graph_interface()->get_node_names();
+  } catch (const std::exception & e) {
+    // The context is gone once rclcpp shuts down (Ctrl-C): nothing to update
+    if (rclcpp::ok(get_node_base_interface()->get_context())) {
+      RCLCPP_ERROR(get_logger(), "Failed to get the node names: %s", e.what());
+    }
+    return;
+  }
   std::string ns = get_namespace();
   if (ns != std::string("/")) {
     ns = ns + std::string("/");
