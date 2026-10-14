@@ -74,6 +74,16 @@ class TestRclpyCascadeLifecycle(unittest.TestCase):
 
         super().tearDown()
 
+    def test_timer_after_shutdown(self):
+        # The state timer used to raise asking for the node names after Ctrl-C
+        node = CascadeLifecycleNode('shutdown_node')
+        node.timer_callback()
+        rclpy.shutdown()
+        node.timer_callback()
+        node.destroy_node()
+        # tearDown shuts down again
+        rclpy.init()
+
     def test_activations_managing_basic(self):
         node_a = CascadeLifecycleNode('test1_node_A')
         node_b = CascadeLifecycleNode('test1_node_B')
