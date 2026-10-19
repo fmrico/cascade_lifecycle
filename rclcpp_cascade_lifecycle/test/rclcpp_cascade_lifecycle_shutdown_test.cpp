@@ -21,13 +21,31 @@
 
 #include "gtest/gtest.h"
 #include "lifecycle_msgs/msg/transition.hpp"
+#include "rcutils/logging.h"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
 
 using namespace std::chrono_literals;  // NOLINT
 
+namespace
+{
+std::atomic<int> errors {0};
+rcutils_logging_output_handler_t previous_handler = nullptr;
+
+void count_errors(
+  const rcutils_log_location_t * location, int severity, const char * name,
+  rcutils_time_point_value_t timestamp, const char * format, va_list * args)
+{
+  if (severity >= RCUTILS_LOG_SEVERITY_ERROR) {
+    errors++;
+  }
+  previous_handler(location, severity, name, timestamp, format, args);
+}
+}  // namespace
+
 // Ctrl-C while the nodes spin: the state timer used to ask for the node names with the
-// context already shut down, and the exception aborted the process
+// context already shut down, and the exception aborted the process. rclcpp logs an error
+// before throwing: not even that
 TEST(rclcpp_cascade_lifecycle, shutdown_while_spinning)
 {
   // Different moments of the 500 ms state timer
@@ -35,6 +53,9 @@ TEST(rclcpp_cascade_lifecycle, shutdown_while_spinning)
     if (!rclcpp::ok()) {
       rclcpp::init(0, nullptr);
     }
+    // rclcpp::init sets its own handler
+    previous_handler = rcutils_logging_get_output_handler();
+    rcutils_logging_set_output_handler(count_errors);
     auto parent = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("parent");
     auto child = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("child");
     child->add_activation("parent");
@@ -52,11 +73,16 @@ TEST(rclcpp_cascade_lifecycle, shutdown_while_spinning)
     parent->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
     std::this_thread::sleep_for(delay);
 
+    errors = 0;
     rclcpp::shutdown();
+    // And so does shutdown
+    rcutils_logging_set_output_handler(count_errors);
     // Several timer periods with the context gone
     std::this_thread::sleep_for(1200ms);
     finish = true;
     spinner.join();
+    rcutils_logging_set_output_handler(previous_handler);
+    EXPECT_EQ(errors, 0) << "shut down after " << delay.count() << " ms";
   }
 }
 

@@ -481,6 +481,10 @@ void
 CascadeLifecycleNode::timer_callback()
 {
   std::vector<std::string> nodes;
+  // After shutdown rclcpp logs an error before throwing: do not ask
+  if (!rclcpp::ok(get_node_base_interface()->get_context())) {
+    return;
+  }
   try {
     nodes = this->get_node_graph_interface()->get_node_names();
   } catch (const std::exception & e) {
