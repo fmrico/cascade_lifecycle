@@ -15,6 +15,7 @@
 
 #include <string>
 #include <set>
+#include <vector>
 
 #include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
@@ -47,26 +48,43 @@ CascadeLifecycleNode::CascadeLifecycleNode(
   using std::placeholders::_1;
   using namespace std::chrono_literals;
 
-  activations_pub_ = create_publisher<cascade_lifecycle_msgs::msg::Activation>(
-    "cascade_lifecycle_activations",
-    rclcpp::QoS(1000).keep_all().transient_local().reliable());
+  declare_parameter("allow_duplicate_names", allow_duplicate_names_);
+  get_parameter("allow_duplicate_names", allow_duplicate_names_);
+
+  if (!allow_duplicate_names_) {
+    activations_pub_ = create_publisher<cascade_lifecycle_msgs::msg::Activation>(
+      "cascade_lifecycle_activations", 100);
+
+    activations_sub_ = create_subscription<cascade_lifecycle_msgs::msg::Activation>(
+      "cascade_lifecycle_activations", 100,
+      std::bind(&CascadeLifecycleNode::activations_callback, this, _1));
+  } else {
+    activations_pub_ = create_publisher<cascade_lifecycle_msgs::msg::Activation>(
+      "cascade_lifecycle_activations",
+      rclcpp::QoS(1000).keep_all().transient_local().reliable());
+
+    activations_sub_ = create_subscription<cascade_lifecycle_msgs::msg::Activation>(
+      "cascade_lifecycle_activations",
+      rclcpp::QoS(1000).keep_all().transient_local().reliable(),
+      std::bind(&CascadeLifecycleNode::activations_callback, this, _1));
+  }
 
   states_pub_ = create_publisher<cascade_lifecycle_msgs::msg::State>(
-    "cascade_lifecycle_states", rclcpp::QoS(100));
-
-  activations_sub_ = create_subscription<cascade_lifecycle_msgs::msg::Activation>(
-    "cascade_lifecycle_activations",
-    rclcpp::QoS(1000).keep_all().transient_local().reliable(),
-    std::bind(&CascadeLifecycleNode::activations_callback, this, _1));
+    "cascade_lifecycle_states", 100);
 
   states_sub_ = create_subscription<cascade_lifecycle_msgs::msg::State>(
-    "cascade_lifecycle_states",
-    rclcpp::QoS(100),
+    "cascade_lifecycle_states", 100,
     std::bind(&CascadeLifecycleNode::states_callback, this, _1));
 
   timer_ = create_wall_timer(
     500ms,
     std::bind(&CascadeLifecycleNode::timer_callback, this));
+
+  if (!allow_duplicate_names_) {
+    timer_responses_ = create_wall_timer(
+      1s,
+      std::bind(&CascadeLifecycleNode::timer_responses_callback, this));
+  }
 
   activations_pub_->on_activate();
   states_pub_->on_activate();
@@ -114,6 +132,12 @@ CascadeLifecycleNode::activations_callback(
         if (activators_state_.find(msg->activator) == activators_state_.end()) {
           activators_state_[msg->activator] = lifecycle_msgs::msg::State::PRIMARY_STATE_UNKNOWN;
         }
+
+        if (!allow_duplicate_names_) {
+          auto response = *msg;
+          response.operation_type = cascade_lifecycle_msgs::msg::Activation::CONFIRM_ADD;
+          activations_pub_->publish(response);
+        }
       }
       break;
     case cascade_lifecycle_msgs::msg::Activation::REMOVE:
@@ -135,6 +159,40 @@ CascadeLifecycleNode::activations_callback(
 
           if (!any_other_activator) {
             trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
+          }
+        }
+
+        if (!allow_duplicate_names_) {
+          auto response = *msg;
+          response.operation_type = cascade_lifecycle_msgs::msg::Activation::CONFIRM_REMOVE;
+          activations_pub_->publish(response);
+        }
+      }
+      break;
+    case cascade_lifecycle_msgs::msg::Activation::CONFIRM_ADD:
+      {
+        auto it = op_pending_.begin();
+        while (it != op_pending_.end()) {
+          if (it->operation_type == cascade_lifecycle_msgs::msg::Activation::ADD &&
+            it->activator == msg->activator && it->activation == msg->activation)
+          {
+            it = op_pending_.erase(it);
+          } else {
+            ++it;
+          }
+        }
+      }
+      break;
+    case cascade_lifecycle_msgs::msg::Activation::CONFIRM_REMOVE:
+      {
+        auto it = op_pending_.begin();
+        while (it != op_pending_.end()) {
+          if (it->operation_type == cascade_lifecycle_msgs::msg::Activation::REMOVE &&
+            it->activator == msg->activator && it->activation == msg->activation)
+          {
+            it = op_pending_.erase(it);
+          } else {
+            ++it;
           }
         }
       }
@@ -171,6 +229,9 @@ CascadeLifecycleNode::add_activation(const std::string & node_name)
       activations_pub_->on_activate();
     }
 
+    if (!allow_duplicate_names_) {
+      op_pending_.push_back(msg);
+    }
     activations_pub_->publish(msg);
   } else {
     RCLCPP_WARN(get_logger(), "Trying to set an auto activation");
@@ -193,6 +254,9 @@ CascadeLifecycleNode::remove_activation(const std::string & node_name)
       activations_pub_->on_activate();
     }
 
+    if (!allow_duplicate_names_) {
+      op_pending_.push_back(msg);
+    }
     activations_pub_->publish(msg);
   } else {
     RCLCPP_WARN(get_logger(), "Trying to remove an auto activation");
@@ -248,6 +312,10 @@ CascadeLifecycleNode::on_cleanup_internal(
       states_pub_->on_activate();
     }
 
+    if (!activations_pub_->is_activated()) {
+      activations_pub_->on_activate();
+    }
+
     states_pub_->publish(msg);
   }
 
@@ -270,6 +338,10 @@ CascadeLifecycleNode::on_shutdown_internal(
     if (!states_pub_->is_activated()) {
       RCLCPP_DEBUG(get_logger(), "Not activated in on_shutdown_internal %d", __LINE__);
       states_pub_->on_activate();
+    }
+
+    if (!activations_pub_->is_activated()) {
+      activations_pub_->on_activate();
     }
 
     states_pub_->publish(msg);
@@ -296,6 +368,10 @@ CascadeLifecycleNode::on_activate_internal(
       states_pub_->on_activate();
     }
 
+    if (!activations_pub_->is_activated()) {
+      activations_pub_->on_activate();
+    }
+
     states_pub_->publish(msg);
   }
 
@@ -320,6 +396,10 @@ CascadeLifecycleNode::on_deactivate_internal(
       states_pub_->on_activate();
     }
 
+    if (!activations_pub_->is_activated()) {
+      activations_pub_->on_activate();
+    }
+
     states_pub_->publish(msg);
   }
 
@@ -342,6 +422,10 @@ CascadeLifecycleNode::on_error_internal(
     if (!states_pub_->is_activated()) {
       RCLCPP_DEBUG(get_logger(), "Not activated in on_error_internal %d", __LINE__);
       states_pub_->on_activate();
+    }
+
+    if (!activations_pub_->is_activated()) {
+      activations_pub_->on_activate();
     }
 
     states_pub_->publish(msg);
@@ -396,7 +480,20 @@ CascadeLifecycleNode::update_state()
 void
 CascadeLifecycleNode::timer_callback()
 {
-  auto nodes = this->get_node_graph_interface()->get_node_names();
+  std::vector<std::string> nodes;
+  // After shutdown rclcpp logs an error before throwing: do not ask
+  if (!rclcpp::ok(get_node_base_interface()->get_context())) {
+    return;
+  }
+  try {
+    nodes = this->get_node_graph_interface()->get_node_names();
+  } catch (const std::exception & e) {
+    // The context is gone once rclcpp shuts down (Ctrl-C): nothing to update
+    if (rclcpp::ok(get_node_base_interface()->get_context())) {
+      RCLCPP_ERROR(get_logger(), "Failed to get the node names: %s", e.what());
+    }
+    return;
+  }
   std::string ns = get_namespace();
   if (ns != std::string("/")) {
     ns = ns + std::string("/");
@@ -433,6 +530,18 @@ CascadeLifecycleNode::timer_callback()
   states_pub_->publish(msg);
 
   update_state();
+}
+
+void
+CascadeLifecycleNode::timer_responses_callback()
+{
+  for (const auto & msg : op_pending_) {
+    if (!activations_pub_->is_activated()) {
+      activations_pub_->on_activate();
+    }
+
+    activations_pub_->publish(msg);
+  }
 }
 
 }  // namespace rclcpp_cascade_lifecycle
