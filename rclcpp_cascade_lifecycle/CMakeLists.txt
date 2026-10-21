@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(rclcpp_cascade_lifecycle)
 
 # Default to C99
@@ -61,8 +61,7 @@ install(
 )
 
 install(TARGETS
-  ${PROJECT_NAME}
-  EXPORT export_${PROJECT_NAME}
+  ${PROJECT_NAME}  EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -70,7 +69,7 @@ install(TARGETS
 
 ament_export_include_directories("include/${PROJECT_NAME}")
 ament_export_libraries(${PROJECT_NAME})
-ament_export_targets(export_${PROJECT_NAME})
+ament_export_targets(${PROJECT_NAME})
 ament_export_dependencies(${package_dependencies})
 
 ament_package()

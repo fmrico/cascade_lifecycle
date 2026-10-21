@@ -2,10 +2,19 @@
 Changelog for package cascade_lifecycle_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.0.5 (2025-10-16)
+2.0.7 (2026-10-21)
 ------------------
+* One version for Humble, Jazzy, Kilted and Lyrical. On Humble (from 1.1.0), Activation gains the CONFIRM_ADD and CONFIRM_REMOVE constants
+* Contributors: Francisco Martín Rico
 
-2.0.4 (2025-10-16)
+2.0.6 (2026-07-28)
+------------------
+* Merge pull request `#21 <https://github.com/fmrico/cascade_lifecycle/issues/21>`_ from ahcorde/ahcorde/rolling/fix_dependency
+  Fixed rclpy_cascade_lifecycle package.xml
+* updated CMakeLists.txt
+* Contributors: Alejandro Hernandez Cordero, Francisco Martín Rico
+
+2.0.4 (2025-06-06)
 ------------------
 
 2.0.3 (2025-06-06)

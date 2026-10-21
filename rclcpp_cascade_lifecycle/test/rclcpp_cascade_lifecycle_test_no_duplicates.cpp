@@ -79,7 +79,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_basic)
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
   auto node_c = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_C", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
   executor.add_node(node_c->get_node_base_interface());
@@ -90,7 +90,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_basic)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -113,7 +113,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_late_joining)
   auto node_a = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_A", options);
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -123,7 +123,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_late_joining)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -154,7 +154,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_late_joining)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -177,7 +177,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained)
   auto node_a = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_A", options);
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -186,7 +186,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -210,7 +210,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -232,7 +232,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -254,7 +254,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -282,7 +282,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
   auto node_c = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_C", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
   executor.add_node(node_c->get_node_base_interface());
@@ -293,7 +293,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -311,7 +311,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -328,7 +328,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -343,7 +343,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -358,7 +358,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -374,7 +374,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -389,7 +389,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -404,7 +404,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -418,7 +418,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -434,7 +434,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -448,7 +448,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -468,7 +468,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, fast_change)
   auto node_a = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_A", options);
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -477,7 +477,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, fast_change)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -495,7 +495,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, fast_change)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -514,7 +514,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance)
   auto node_a = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_A", options);
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -523,7 +523,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -541,7 +541,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -578,7 +578,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   auto node_b = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_B", options);
   auto node_c = std::make_shared<rclcpp_cascade_lifecycle::CascadeLifecycleNode>("node_C", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
   executor.add_node(node_c->get_node_base_interface());
@@ -588,7 +588,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -605,7 +605,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -627,7 +627,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -644,7 +644,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -661,7 +661,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -676,7 +676,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -691,7 +691,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -706,7 +706,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -721,7 +721,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -736,7 +736,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -751,7 +751,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -766,7 +766,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -782,7 +782,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -807,7 +807,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -823,7 +823,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -838,7 +838,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -854,7 +854,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -869,7 +869,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -884,7 +884,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -899,7 +899,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -914,7 +914,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter)
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -934,7 +934,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance)
   auto node_1 = std::make_shared<TestNode>("node_1", "", options);
   auto node_2 = std::make_shared<TestNode>("node_2", "", options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_1->get_node_base_interface());
   executor.add_node(node_2->get_node_base_interface());
 
@@ -944,7 +944,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 1.0) {
+    while ((node_1->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -960,7 +960,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 1.0) {
+    while ((node_1->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -976,7 +976,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 1.0) {
+    while ((node_1->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1007,7 +1007,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_basic_with_nam
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
   executor.add_node(node_c->get_node_base_interface());
@@ -1018,7 +1018,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_basic_with_nam
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1047,7 +1047,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_late_joining_w
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -1057,7 +1057,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_late_joining_w
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1093,7 +1093,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_managing_late_joining_w
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1122,7 +1122,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained_with_namespace)
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -1131,7 +1131,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1155,7 +1155,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1177,7 +1177,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1199,7 +1199,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activations_chained_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1236,7 +1236,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
   executor.add_node(node_c->get_node_base_interface());
@@ -1247,7 +1247,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1265,7 +1265,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1282,7 +1282,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1297,7 +1297,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1312,7 +1312,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1328,7 +1328,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1343,7 +1343,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1358,7 +1358,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1372,7 +1372,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1388,7 +1388,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1402,7 +1402,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, multiple_activations_chained_with_n
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1428,7 +1428,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, fast_change_with_namespace)
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -1437,7 +1437,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, fast_change_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1455,7 +1455,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, fast_change_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1480,7 +1480,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_with_names
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
 
@@ -1489,7 +1489,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_with_names
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1507,7 +1507,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_with_names
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1553,7 +1553,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_a->get_node_base_interface());
   executor.add_node(node_b->get_node_base_interface());
   executor.add_node(node_c->get_node_base_interface());
@@ -1563,7 +1563,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_a->now();
-    while ((node_a->now() - start).seconds() < 1.0) {
+    while ((node_a->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1580,7 +1580,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1602,7 +1602,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1619,7 +1619,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1636,7 +1636,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1651,7 +1651,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1666,7 +1666,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1681,7 +1681,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1696,7 +1696,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1711,7 +1711,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1726,7 +1726,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1741,7 +1741,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1757,7 +1757,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1782,7 +1782,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1798,7 +1798,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1813,7 +1813,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1829,7 +1829,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1844,7 +1844,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1859,7 +1859,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1874,7 +1874,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1889,7 +1889,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, activators_disappearance_inter_with
   {
     rclcpp::Rate rate(10);
     auto start = node_b->now();
-    while ((node_b->now() - start).seconds() < 1.0) {
+    while ((node_b->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1915,7 +1915,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance_with_namespace)
     "test_ns",
     options);
 
-  rclcpp::experimental::executors::EventsExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node_1->get_node_base_interface());
   executor.add_node(node_2->get_node_base_interface());
 
@@ -1925,7 +1925,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 1.0) {
+    while ((node_1->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1941,7 +1941,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 1.0) {
+    while ((node_1->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }
@@ -1957,7 +1957,7 @@ TEST(rclcpp_cascade_lifecycle_no_duplicates, inheritance_with_namespace)
   {
     rclcpp::Rate rate(10);
     auto start = node_1->now();
-    while ((node_1->now() - start).seconds() < 1.0) {
+    while ((node_1->now() - start).seconds() < 2.0) {
       executor.spin_some();
       rate.sleep();
     }

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 
 project(cascade_lifecycle_msgs)
 
@@ -17,8 +17,8 @@ find_package(lifecycle_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Activation.msg" 
-  "msg/State.msg" 
+  "msg/Activation.msg"
+  "msg/State.msg"
  DEPENDENCIES builtin_interfaces lifecycle_msgs
  ADD_LINTER_TESTS
 )

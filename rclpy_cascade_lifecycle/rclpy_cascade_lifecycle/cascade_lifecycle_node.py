@@ -270,7 +270,13 @@ class CascadeLifecycleNode(LifecycleNode):
                 self.trigger_deactivate()
 
     def timer_callback(self):
-        nodes = self.get_node_names()
+        try:
+            nodes = self.get_node_names()
+        except Exception as e:
+            # The context is gone once rclpy shuts down (Ctrl-C): nothing to update
+            if self.context.ok():
+                self.get_logger().error(f'Failed to get the node names: {e}')
+            return
         ns = self._namespace
         current_state = self._state_machine.current_state[1]
         activators_to_remove = []
