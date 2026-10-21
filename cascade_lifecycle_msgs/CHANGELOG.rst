@@ -2,6 +2,11 @@
 Changelog for package cascade_lifecycle_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.7 (2026-10-21)
+------------------
+* One version for Humble, Jazzy, Kilted and Lyrical. On Humble (from 1.1.0), Activation gains the CONFIRM_ADD and CONFIRM_REMOVE constants
+* Contributors: Francisco Martín Rico
+
 2.0.6 (2026-07-28)
 ------------------
 * Merge pull request `#21 <https://github.com/fmrico/cascade_lifecycle/issues/21>`_ from ahcorde/ahcorde/rolling/fix_dependency

@@ -2,6 +2,14 @@
 Changelog for package rclcpp_cascade_lifecycle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.7 (2026-10-21)
+------------------
+* One version for Humble, Jazzy, Kilted and Lyrical. On Humble (from 1.1.0) the API does not change, but the class layout does: rebuild what was built against 1.1.0
+* Do not abort when the state timer runs after shutdown, and do not ask for the node names then (`#25 <https://github.com/fmrico/cascade_lifecycle/issues/25>`_, `#27 <https://github.com/fmrico/cascade_lifecycle/issues/27>`_)
+* Tests discover only nodes on this host (`#23 <https://github.com/fmrico/cascade_lifecycle/issues/23>`_)
+* Tests with the SingleThreadedExecutor, 2 s per step: the experimental EventsExecutor is deprecated and Humble does not have it (`#28 <https://github.com/fmrico/cascade_lifecycle/issues/28>`_)
+* Contributors: Francisco Martín Rico
+
 2.0.6 (2026-07-28)
 ------------------
 * Merge pull request `#21 <https://github.com/fmrico/cascade_lifecycle/issues/21>`_ from ahcorde/ahcorde/rolling/fix_dependency
